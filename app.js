@@ -18,7 +18,8 @@ app.listen(process.env.PORT, () =>{
 })
 
 let db;
-MongoClient.connect(process.env.mongodb, (err, client) =>{
+let uri = "mongodb+srv://goodcoder2000:1082018mgmg@testing1.i6f65.mongodb.net/?retryWrites=true&w=majority"
+MongoClient.connect(uri, (err, client) =>{
     if(err) throw err
     db = client.db('shoeshop')
 })
