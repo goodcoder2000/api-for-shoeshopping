@@ -16,7 +16,7 @@ app.listen(process.env.PORT || 3000, () =>{
     console.log('server is running')
 })
 
-let uri = "mongodb+srv://goodcoder2000:1082018mgmg@testing1.i6f65.mongodb.net/?retryWrites=true&w=majority"
+let uri = "mongodb+srv://goodcoder2000:1082018mgmg@testing1.i6f65.mongodb.net/?retryWrites=true&w=majority";
 let db;
 MongoClient.connect(uri, (err, client) =>{
     if(err) throw err
