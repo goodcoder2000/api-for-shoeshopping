@@ -5,6 +5,7 @@ const MongoClient = require('mongodb').MongoClient;
 const cors = require('cors');
 
 app.use(express.json());
+let port = process.env.PORT || 3000;
 app.use(cors({
     "origin": "*",
     "methods": "GET,HEAD,PUT,PATCH,POST,DELETE",
@@ -12,7 +13,7 @@ app.use(cors({
     "optionsSuccessStatus": 204
   }));
 
-app.listen(process.env.PORT || 3000, () =>{
+app.listen(port, () =>{
     console.log('server is running')
 })
 
