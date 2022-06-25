@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const { ObjectId } = require('mongodb');
 const app = express();
@@ -5,7 +6,6 @@ const MongoClient = require('mongodb').MongoClient;
 const cors = require('cors');
 
 app.use(express.json());
-let port = process.env.PORT || 3000;
 app.use(cors({
     "origin": "*",
     "methods": "GET,HEAD,PUT,PATCH,POST,DELETE",
@@ -13,13 +13,12 @@ app.use(cors({
     "optionsSuccessStatus": 204
   }));
 
-app.listen(port, () =>{
-    console.log('server is running')
+app.listen(process.env.PORT, () =>{
+    console.log('server is running', process.env.PORT)
 })
 
-let uri = "mongodb+srv://goodcoder2000:1082018mgmg@testing1.i6f65.mongodb.net/?retryWrites=true&w=majority";
 let db;
-MongoClient.connect(uri, (err, client) =>{
+MongoClient.connect(process.env.mongodb, (err, client) =>{
     if(err) throw err
     db = client.db('shoeshop')
 })
