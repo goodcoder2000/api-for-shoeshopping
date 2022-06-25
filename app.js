@@ -1,9 +1,8 @@
 const express = require('express');
-const cors = require("cors");
+const { ObjectId } = require('mongodb');
 const app = express();
-const mongoClient = require("mongodb").MongoClient;
-const { ObjectId } = require("mongodb");
-require('dotenv');
+const MongoClient = require('mongodb').MongoClient;
+const cors = require('cors');
 
 app.use(express.json());
 app.use(cors({
@@ -13,41 +12,33 @@ app.use(cors({
     "optionsSuccessStatus": 204
   }));
 
-app.listen(process.env.PORT|| 3000, () =>{
+app.listen(process.env.PORT || 3000, () =>{
     console.log('server is running')
 })
 
+let uri = "mongodb+srv://goodcoder2000:1082018mgmg@testing1.i6f65.mongodb.net/?retryWrites=true&w=majority"
 let db;
-let uri = "mongodb+srv://goodcoder2000:1082018mgmg@testing1.i6f65.mongodb.net/?retryWrites=true&w=majority";
-mongoClient.connect(uri, (err, client) =>{
+MongoClient.connect(uri, (err, client) =>{
     if(err) throw err
-
-    db = client.db("shoeshop");
+    db = client.db('shoeshop')
 })
 
-
-// getting all users
 app.get('/users', (req, res) =>{
     db.collection('users').find().toArray((err, result) =>{
-        if(err){
-            res.status(500).json({err: err})
-        }
-    
+        if(err) throw err
         res.status(200).json(result);
-    })
-    
-})
-// get single docs
-app.get('/users/:id', (req, res) =>{
-    const userId = req.params.id;
-    db.collection("users").findOne({_id: ObjectId(userId)})
-    .then((result) =>{
-        res.status(200).json(result)
     })
 })
 
-// post 
-app.post('/users', (req, res) =>{
+app.get('/users/:id', (req,res) =>{
+    const userId = req.params.id;
+    db.collection('users').findOne({_id: ObjectId(userId)})
+    .then((result) =>{
+        res.status(200).json(result);
+    })
+})
+
+app.post('/users', (req,res) =>{
     const data = req.body;
     db.collection('users').insertOne(data)
     .then((result) =>{
@@ -55,53 +46,47 @@ app.post('/users', (req, res) =>{
     })
 })
 
-
-// for nesked docs
-app.patch("/users/:id/:method", (req, res) =>{
-    const userId = req.params.id;
+app.patch('/users/:id/:method', (req, res) =>{
     const method = req.params.method;
+    const userId = req.params.id;
     const data = req.body;
     if("push" === method){
-        db.collection("users").updateOne({_id: ObjectId(userId)}, {$addToSet: {orderpost: data}})
+        db.collection('users').updateOne({_id: ObjectId(userId)}, {$addToSet: {comment: data}})
         .then((result) =>{
-            res.status(201).json(result);
+            res.status(201).json(result)
         })
     } else if("pull" === method){
-        db.collection("users").updateOne({_id: ObjectId(userId)}, {$pull: {orderpost: data}})
+        db.collection('users').updateOne({_id: ObjectId(userId)}, {$pull: {comment: data}})
         .then((result) =>{
-            res.status(201).json(result);
+            res.status(201).json(result)
         })
     }
 })
 
-// getting all shoesmenu
+// for menu collection
 
 app.get('/shoesmenu', (req, res) =>{
     db.collection('shoesmenu').find().toArray((err, result) =>{
-        if(err){
-            res.status(500).json({err: err})
-        }
-    
+        if(err) throw err
         res.status(200).json(result);
     })
-    
 })
-// get single docs
-app.get('/shoesmenu/:id', async (req, res) =>{
-    const id = req.params.id;
-    await db.collection('shoesmenu').findOne({_id: ObjectId(id)})
+
+app.get('/shoesmenu/:id', (req, res) =>{
+    const data = req.params.id;
+    db.collection('shoesmenu').findOne({_id: ObjectId(data)})
     .then((result) =>{
         res.status(200).json(result);
     })
 })
 
-// post 
-app.post('/shoesmenu', (req, res) =>{
+app.post('/shoesmenu', (req,res) =>{
     const data = req.body;
     db.collection('shoesmenu').insertOne(data)
     .then((result) =>{
-        res.status(201).json(result)
+        res.status(201).json(result);
     })
 })
+
 
 
