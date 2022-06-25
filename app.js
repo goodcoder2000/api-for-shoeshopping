@@ -3,6 +3,7 @@ const cors = require("cors");
 const app = express();
 const mongoClient = require("mongodb").MongoClient;
 const { ObjectId } = require("mongodb");
+require('dotenv');
 
 app.use(express.json());
 app.use(cors({
@@ -12,7 +13,7 @@ app.use(cors({
     "optionsSuccessStatus": 204
   }));
 
-app.listen(process.env.PORT || 3000, () =>{
+app.listen(process.env.PORT|| 3000, () =>{
     console.log('server is running')
 })
 
