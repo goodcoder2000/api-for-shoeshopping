@@ -52,12 +52,17 @@ app.patch('/users/:id/:method', (req, res) =>{
     const userId = req.params.id;
     const data = req.body;
     if("push" === method){
-        db.collection('users').updateOne({_id: ObjectId(userId)}, {$addToSet: {comment: data}})
+        db.collection('users').updateOne({_id: ObjectId(userId)}, {$addToSet: {cartItems: data}})
         .then((result) =>{
             res.status(201).json(result)
         })
     } else if("pull" === method){
-        db.collection('users').updateOne({_id: ObjectId(userId)}, {$pull: {comment: data}})
+        db.collection('users').updateOne({_id: ObjectId(userId)}, {$pull: {cartItems: data}})
+        .then((result) =>{
+            res.status(201).json(result)
+        })
+    } else if("ordered" === method){
+        db.collection('users').updateOne({_id: ObjectId(userId)}, {$push: {cartItems: data}})
         .then((result) =>{
             res.status(201).json(result)
         })
