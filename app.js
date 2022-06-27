@@ -62,7 +62,7 @@ app.patch('/users/:id/:method', (req, res) =>{
             res.status(201).json(result)
         })
     } else if("ordered" === method){
-        db.collection('users').updateOne({_id: ObjectId(userId)}, {$push: {cartItems: data}})
+        db.collection('users').updateOne({_id: ObjectId(userId)}, {$push: {orderConformed: data}})
         .then((result) =>{
             res.status(201).json(result)
         })
