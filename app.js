@@ -93,3 +93,12 @@ app.post('/shoesmenu', (req,res) =>{
         res.status(201).json(result);
     })
 })
+
+// admin
+
+app.get('/admin/orderconform/api', (req, res) =>{
+    db.collection('users').find().sort({time: 1}).toArray((err, result) =>{
+        if(err) throw err
+        res.status(200).json(result);
+    })
+})
