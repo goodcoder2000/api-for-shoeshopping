@@ -47,10 +47,11 @@ app.post('/users', (req,res) =>{
     })
 })
 
-app.patch('/users/:id/:method', (req, res) =>{
+app.patch('/users/:id/:method/:indexPoint', (req, res) =>{
     const method = req.params.method;
     const userId = req.params.id;
     const data = req.body;
+    const indexPoint = req.params.indexPoint;
     if("push" === method){
         db.collection('users').updateOne({_id: ObjectId(userId)}, {$addToSet: {cartItems: data}})
         .then((result) =>{
@@ -63,6 +64,11 @@ app.patch('/users/:id/:method', (req, res) =>{
         })
     } else if("ordered" === method){
         db.collection('users').updateOne({_id: ObjectId(userId)}, {$push: {orderConformed: data}})
+        .then((result) =>{
+            res.status(201).json(result)
+        })
+    } else if("set" ===method){
+        db.collection('users').update({_id: ObjectId(userId)}, {$set: {[`orderConformed.${indexPoint}`]: data}})
         .then((result) =>{
             res.status(201).json(result)
         })
