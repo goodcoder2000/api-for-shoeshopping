@@ -67,12 +67,7 @@ app.patch('/users/:id/:method/:indexPoint', (req, res) =>{
         .then((result) =>{
             res.status(201).json(result)
         })
-    } else if("set" ===method){
-        db.collection('users').update({_id: ObjectId(userId)}, {$set: {[`orderConformed.${indexPoint}`]: data}})
-        .then((result) =>{
-            res.status(201).json(result)
-        })
-    }
+    } 
 })
 
 // for menu collection
